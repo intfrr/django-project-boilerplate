@@ -1,0 +1,52 @@
+# -*- coding: utf-8 -*-
+
+"""
+    Env settings
+    Author  :   Alvaro Lizama Molina <alvaro@knoudo.com>
+"""
+
+##
+## Debug
+##
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+
+##
+## Admins
+##
+#ADMINS = (
+#        ('Alvaro Lizana', 'alvaro@knoudo.com'),
+#)
+#MANAGERS = ADMINS
+
+
+##
+## Database
+##
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_project',
+        'USER': 'dev',
+        'PASSWORD': 'dev',
+        'HOST': '',
+        'PORT': '',
+    }
+}
+
+
+##
+## Domains
+##
+DEFAULT_URL = ''
+
+
+##
+## Mail
+##
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = ''
+#EMAIL_HOST_PASSWORD = ''
+#EMAIL_PORT = 587

@@ -1,0 +1,6 @@
+pillow
+psycopg2
+django
+south
+django-debug-toolbar
+django-pipeline
