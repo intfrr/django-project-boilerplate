@@ -71,13 +71,14 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(DIRNAME, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    MEDIA_ROOT,
+    os.path.join(DIRNAME, 'assets'),
 )
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
 )
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
 
 ##
@@ -128,7 +129,6 @@ INTERNAL_IPS = ('10.0.2.2',)
 ##
 ## Pipeline
 ##
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 PIPELINE_CSS = {
     'stylesheets': {
         'source_filenames': (

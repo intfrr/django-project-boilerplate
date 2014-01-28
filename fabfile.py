@@ -131,11 +131,10 @@ def bootstrap():
     cuisine.sudo('npm -g install bower')
 
     puts(green('-> Creating directories'))
-    cuisine.dir_ensure(env.project_path + 'media/components')
-    cuisine.dir_ensure(env.project_path + 'media/images')
-    cuisine.dir_ensure(env.project_path + 'media/stylesheets')
-    cuisine.dir_ensure(env.project_path + 'media/scripts')
-
+    cuisine.dir_ensure(env.project_path + 'assets/components')
+    cuisine.dir_ensure(env.project_path + 'assets/images')
+    cuisine.dir_ensure(env.project_path + 'assets/stylesheets')
+    cuisine.dir_ensure(env.project_path + 'assets/scripts')
 
     puts(red('###############################'))
     puts(red('### Host setup completed'))
