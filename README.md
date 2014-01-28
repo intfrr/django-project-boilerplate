@@ -59,7 +59,7 @@ o
 
 - Copiar __src/settings/enviroment.py.txt__ a __src/settings/enviroment.py__.
 - Ejecutar __vagrant up__ para crear la maquina virtual.
-- Ejecutar __fab bootstrap__ para provisionar la maquina virtual.
+- Ejecutar __fab bootstrap__ para provisionar la maquina virtualm cuando pida password se debe poner "vagrant".
 - Ejecutar __fab syncdb__ para crear las tablas principales y el usuario de admin.
 - Ejecutar __fab bower__ para instalar las dependencias del frontend.
 - Ejecutar __fab runserver__ para correr el servidor de desarrollo.
