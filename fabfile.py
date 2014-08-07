@@ -233,54 +233,6 @@ def startapp(app_name):
 
 
 @task
-def bower_search(package):
-    """ Run bower search package """
-
-    puts(red('###############################'))
-    puts(red('### Bower search'))
-    puts(red('###############################'))
-
-    with cuisine.cd(env.project_path):
-        cuisine.run('bower search %s' % package)
-
-
-@task
-def bower_install(package):
-    """ Run bower install package """
-
-    puts(red('###############################'))
-    puts(red('### Bower install'))
-    puts(red('###############################'))
-
-    with cuisine.cd(env.project_path):
-        cuisine.run('bower install %s' % package)
-
-
-@task
-def bower_uninstall(package):
-    """ Run bower uninstall package """
-
-    puts(red('###############################'))
-    puts(red('### Bower uninstall'))
-    puts(red('###############################'))
-
-    with cuisine.cd(env.project_path):
-        cuisine.run('bower uninstall %s' % package)
-
-
-@task
-def bower_list():
-    """ Run bower list packages"""
-
-    puts(red('###############################'))
-    puts(red('### Bower list'))
-    puts(red('###############################'))
-
-    with cuisine.cd(env.project_path):
-        cuisine.run('bower list')
-
-
-@task
 def bower():
     """ Run bower install from bower.json"""
 
