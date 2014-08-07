@@ -69,6 +69,9 @@ o
 - __fab migrate:\<app-name\>__ Instala las migraciones de una app en especifico.
 - __fab makemigrations__ Crea migraciones de todas las apps.
 - __fab makemigrations:\<app-name\>__ Crea migraciones para una app en especifico.
+- __fab makemessages__ Actualiza todas las cadenas de lenguaje.
+- __fab makemessages:\<lang\>__ Crea una un no archivo para localizar cadenas de lenguaje.
+- __fab compilemessages__ Compila los archivos de lenguaje.
 - __fab startapp:\<app-name\>__ Crea una nueva app.
 - __fab pip__ Instala todos los paquetes definidos en el requirements.txt.
 - __fab debugsqlshell__ Muestra la shell de debug-toolbar.

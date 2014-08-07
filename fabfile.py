@@ -43,6 +43,9 @@ def bootstrap():
     puts(green('-> Update repositories'))
     cuisine.package_update()
 
+    puts(green('-> Installing gettext'))
+    cuisine.package_ensure("gettext")
+
     puts(green('-> Installing curl'))
     cuisine.package_ensure("curl")
 
@@ -118,6 +121,7 @@ def bootstrap():
     cuisine.dir_ensure(env.project_path + 'assets/images')
     cuisine.dir_ensure(env.project_path + 'assets/stylesheets')
     cuisine.dir_ensure(env.project_path + 'assets/scripts')
+    cuisine.dir_ensure(env.project_path + 'locale/')
 
     puts(red('###############################'))
     puts(red('### Host setup completed'))
@@ -217,6 +221,32 @@ def debugsqlshell():
     with cuisine.cd(env.project_path):
         cuisine.run('python manage.py debugsqlshell')
 
+
+@task
+def makemessages(lang=None):
+    """ Run python manage.py makemessages """
+
+    puts(red('###############################'))
+    puts(red('### Makemessages'))
+    puts(red('###############################'))
+
+    with cuisine.cd(env.project_path):
+        if lang is not None:
+            cuisine.run('python manage.py makemessages -l %s' % lang)
+        else:
+            cuisine.run('python manage.py makemessages -a')
+
+
+@task
+def compilemessages():
+    """ Run python manage.py compilemessages """
+
+    puts(red('###############################'))
+    puts(red('### Compilemessages'))
+    puts(red('###############################'))
+
+    with cuisine.cd(env.project_path):
+        cuisine.run('python manage.py compilemessages')
 
 @task
 def startapp(app_name):

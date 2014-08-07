@@ -19,10 +19,16 @@ DIRNAME = os.path.dirname(os.path.dirname(__file__))
 ## I18N & L18N
 ##
 TIME_ZONE = 'America/Mexico_City'
-LANGUAGE_CODE = 'es-es'
+LANGUAGES = (
+  ('en', 'English'),
+  ('es', 'Spanish'),
+)
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+LOCALE_PATHS = (
+    os.path.join(DIRNAME, 'locale/'),
+)
 
 
 ##
@@ -57,6 +63,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
