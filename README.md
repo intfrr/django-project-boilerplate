@@ -66,10 +66,10 @@ o
 - __fab shell__ Muestra la shell de Django.
 - __fab runserver__ Ejecuta el servidor de desarrollo y se vuelve accesible por http://127.0.0.1:8000.
 - __fab migrate__ Instala toda las migraciones en la base de datos.
-- __fab migrate:<app-name>__ Instala las migraciones de una app en especifico.
+- __fab migrate:\<app-name\>__ Instala las migraciones de una app en especifico.
 - __fab makemigrations__ Crea migraciones de todas las apps.
-- __fab makemigrations:<app-name>__ Crea migraciones para una app en especifico.
-- __fab startapp:<app-name>__ Crea una nueva app.
+- __fab makemigrations:\<app-name\>__ Crea migraciones para una app en especifico.
+- __fab startapp:\<app-name\>__ Crea una nueva app.
 - __fab pip__ Instala todos los paquetes definidos en el requirements.txt.
 - __fab debugsqlshell__ Muestra la shell de debug-toolbar.
 - __fab bower__ Instala los paquetes del bower.json.
