@@ -10,14 +10,10 @@ from django.contrib import admin
 from django.conf import settings
 
 
-admin.autodiscover()
-
-
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'applications.front.views.index')
 )
-
 
 if settings.DEBUG:
     from django.conf.urls.static import static

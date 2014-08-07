@@ -1,15 +1,16 @@
-# Boilerplate para proyectos con Django y PostgreSQL #
+# Boilerplate para proyectos con Django 1.7 y PostgreSQL #
+
+NOTA: Esta versión contiene el RC2 de Django 1.7
 
 ## ¿Que contiene?
 
-Contiene un maquina virtual con debian 7.2 con python, postgres y nodejs lista para correr django.
+Contiene un maquina virtual con debian 7.4 con python, postgres y nodejs lista para correr django.
 
 El proyecto de django ya tiene una estructura y una configuracion inicial bastante facil de entender y contiene los siguientes modulos:
 
 - PsycoPG2 como driver de postgres http://initd.org/psycopg/
 - Django Debug Toolbar para un facil debug http://django-debug-toolbar.readthedocs.org/
 - Django Pipeline para el manejo de assets y compresion de assets y html en producción http://django-pipeline.readthedocs.org/
-- South para el manejo de migraciones de la base de datos http://south.aeracode.org/
 - Pillow para manipulacion de imagenes https://pypi.python.org/pypi/Pillow/
 
 La maquina virtual ya viene lista y preconfigurada com bower para el manejo de librerias para el front end, estas se guardar en src/media/components y fabric ya tiene los comandos para usarlo sin entrar a la vm.
@@ -59,8 +60,9 @@ o
 
 - Copiar __src/settings/enviroment.py.txt__ a __src/settings/enviroment.py__.
 - Ejecutar __vagrant up__ para crear la maquina virtual.
-- Ejecutar __fab bootstrap__ para provisionar la maquina virtualm cuando pida password se debe poner "vagrant".
-- Ejecutar __fab syncdb__ para crear las tablas principales y el usuario de admin.
+- Ejecutar __fab bootstrap__ para provisionar la maquina virtual. NOTA: Si pide password se debe poner "vagrant".
+- Ejecutar __fab migrate__ para crear las tablas principales.
+- Ejecutar __fab createsuperuser__ para crear el usuario de administración.
 - Ejecutar __fab bower__ para instalar las dependencias del frontend.
 - Ejecutar __fab runserver__ para correr el servidor de desarrollo.
 - Para para poder acceder a la aplicación se hace por http://127.0.0.1:8000.
@@ -91,10 +93,9 @@ o
 
 - fab shell
 - fab runserver
-- fab syncdb
 - fab migrate
-- fab initial\_migration:applications.app-name
-- fab auto\_migration:applications.app-name
+- fab migrate:app-name
+- fab makemigrations:app-name
 - fab startapp:app-name
 - fab pip
 - fab debugsqlshell

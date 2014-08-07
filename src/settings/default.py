@@ -56,9 +56,11 @@ ALLOWED_HOSTS = ["*"]
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'pipeline.middleware.MinifyHTMLMiddleware',
 )
 
@@ -71,7 +73,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(DIRNAME, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(DIRNAME, 'assets'),
+    os.path.join(DIRNAME, 'assets/images/'),
 )
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -107,17 +109,22 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 ## Apps
 ##
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'south',
     'debug_toolbar',
     'pipeline',
     'applications.front'
 )
+
+
+##
+## Django Test Runner
+##
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 
 ##
@@ -185,5 +192,5 @@ LOGGING = {
 try:
     from enviroment import *
 except:
-    print "Copy enviroment.py.txt to enviroment.py"
+    print "Copy src/settings/enviroment.py.txt to src/settings/enviroment.py"
     sys.exit(0)

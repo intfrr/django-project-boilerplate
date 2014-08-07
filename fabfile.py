@@ -14,7 +14,7 @@ from fabric.decorators import task
 try:
     from src.settings.enviroment import DATABASES
 except ImportError:
-    print "Copy enviroment.py.txt to enviroment.py in django settings folder"
+    print "Copy src/settings/enviroment.py.txt to src/settings/enviroment.py"
     sys.exit(0)
 
 
@@ -23,20 +23,10 @@ env.hosts = ['127.0.0.1:2222']
 result = cuisine.run_local('vagrant ssh-config | grep IdentityFile')
 env.key_filename = result.split()[1].replace("\"", "")
 env.project_path = '/home/vagrant/src/'
-env.virtualenv = 'django-project'
 
 
 ##
-## Utils
-##
-def virtualenv(command):
-    """ Run virtualenv commands """
-
-    return "source /usr/local/bin/virtualenvwrapper.sh &&" + command + " " + env.virtualenv
-
-
-##
-## Tasks
+## Bootstrap
 ##
 
 @task
@@ -83,9 +73,6 @@ def bootstrap():
     puts(green('-> Installing python-pip'))
     cuisine.package_ensure("python-pip")
 
-    puts(green('-> Installing python virtualenv wrapper'))
-    cuisine.sudo('pip install virtualenvwrapper')
-
     puts(green('-> Installing postgres'))
     if not cuisine.dir_exists('/etc/postgresql'):
         cuisine.sudo('echo "deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main" > /etc/apt/sources.list.d/pgdg.list')
@@ -111,18 +98,14 @@ def bootstrap():
     puts(green('-> Creating postgres database'))
     cuisine.sudo('psql -c "CREATE DATABASE %s;"' % db_name, user='postgres')
 
-    puts(green('-> Creating python env'))
-    cuisine.run('echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc')
-    cuisine.run(virtualenv('mkvirtualenv'))
-
     puts(green('-> Installing requirements for django'))
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + \
-            ' && pip install -r requirements.txt')
+        cuisine.run('pip install --user https://www.djangoproject.com/download/1.7c2/tarball/')
+        cuisine.run('pip install --user -r requirements.txt')
 
     puts(green('-> Installing nodejs'))
     cuisine.package_ensure('nodejs-legacy')
-    cuisine.sudo('curl https://npmjs.org/install.sh | sh ')
+    cuisine.sudo('curl https://www.npmjs.org/install.sh | sh ')
 
     puts(green('-> Installing yuglify'))
     cuisine.sudo('npm -g install yuglify')
@@ -141,33 +124,24 @@ def bootstrap():
     puts(red('###############################'))
 
 
+##
+## Development tasks
+##
+
 @task
 def pip():
-    """ Run pip install -r """
+    """ Run pip install --user -r """
 
     puts(red('###############################'))
     puts(red('### Pip'))
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + \
-            ' && pip install -r requirements.txt')
+        cuisine.run('pip install --user -r requirements.txt')
 
 
 @task
-def syncdb():
-    """ Run python manage.py syncdb """
-
-    puts(red('###############################'))
-    puts(red('### Syncdb'))
-    puts(red('###############################'))
-
-    with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + " && python manage.py syncdb")
-
-
-@task
-def migrate():
+def migrate(app=None):
     """ Run python manage.py migrate """
 
     puts(red('###############################'))
@@ -175,31 +149,37 @@ def migrate():
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + " && python manage.py migrate")
+        if app is not None:
+            cuisine.run('python manage.py migrate %s' % app)
+        else:
+            cuisine.run('python manage.py migrate')
 
 
 @task
-def initial_migration(app):
-    """ Run python manage.py schemamigration --initial app """
+def makemigrations(app=None):
+    """ Run python manage.py makemigrations"""
 
     puts(red('###############################'))
-    puts(red('### Initial Schemamigration'))
+    puts(red('### Makemigrations'))
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + " && python manage.py schemamigration --initial %s" % app)
+        if app is not None:
+            cuisine.run('python manage.py makemigrations %s' % app)
+        else:
+            cuisine.run('python manage.py makemigrations')
 
 
 @task
-def auto_migration(app):
-    """ Run python manage.py schemamigration --auto app """
+def createsuperuser():
+    """ Run python manage.py makemigrations"""
 
     puts(red('###############################'))
-    puts(red('### Auto Schemamigration'))
+    puts(red('### Createsuperuser'))
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + " && python manage.py schemamigration --auto %s" % app)
+        cuisine.run('python manage.py createsuperuser')
 
 
 @task
@@ -211,7 +191,7 @@ def runserver():
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + " && python manage.py runserver 0.0.0.0:8000")
+        cuisine.run('python manage.py runserver 0.0.0.0:8000')
 
 
 @task
@@ -223,7 +203,7 @@ def shell():
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + " && python manage.py shell")
+        cuisine.run('python manage.py shell')
 
 
 @task
@@ -235,7 +215,7 @@ def debugsqlshell():
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run(virtualenv('workon') + " && python manage.py debugsqlshell")
+        cuisine.run('python manage.py debugsqlshell')
 
 
 @task
@@ -249,7 +229,7 @@ def startapp(app_name):
     with cuisine.cd(env.project_path):
         path = 'applications/%s' % app_name
         cuisine.run('mkdir %s' % path)
-        cuisine.run(virtualenv('workon') + " && python manage.py startapp %s %s" %(app_name, path))
+        cuisine.run('python manage.py startapp %s %s' % (app_name, path))
 
 
 @task
@@ -261,7 +241,7 @@ def bower_search(package):
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run("bower search " + package)
+        cuisine.run('bower search %s' % package)
 
 
 @task
@@ -273,7 +253,8 @@ def bower_install(package):
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run("bower install " + package)
+        cuisine.run('bower install %s' % package)
+
 
 @task
 def bower_uninstall(package):
@@ -284,7 +265,7 @@ def bower_uninstall(package):
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run("bower uninstall " + package)
+        cuisine.run('bower uninstall %s' % package)
 
 
 @task
@@ -296,7 +277,7 @@ def bower_list():
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run("bower list ")
+        cuisine.run('bower list')
 
 
 @task
@@ -308,4 +289,4 @@ def bower():
     puts(red('###############################'))
 
     with cuisine.cd(env.project_path):
-        cuisine.run("bower install ")
+        cuisine.run('bower install')
